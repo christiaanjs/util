@@ -1,0 +1,26 @@
+#!/usr/bin/Rscript
+args <- commandArgs(trailingOnly=TRUE)
+lo <- as.numeric(args[1])
+hi <- as.numeric(args[2])
+qs <- c(lo, hi)
+alpha <- if(length(args) > 2){
+  as.numeric(args[3])
+} else {
+  0.05
+}
+ps <- c(alpha/2.0, 1-alpha/2.0)
+"ps"
+ps
+par <- c(0.0, log(1.0))
+fn <- function(x){ sum((qlnorm(ps, x[1], exp(x[2]))-qs)^2) }
+res <- optim(par, fn)
+"res"
+res
+loc <- res$par[1]
+scale <- exp(res$par[2])
+"loc"
+loc
+"scale"
+scale
+"Quantiles"
+qlnorm(ps, loc, scale)
